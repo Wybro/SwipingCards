@@ -9,10 +9,19 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    @IBOutlet var tileImageView: UIImageView!
+    @IBOutlet var tileView: TileView!
+    
+    let tileImages = [UIImage(named: "Blue"), UIImage(named: "Green"), UIImage(named: "Red"), UIImage(named: "Yellow")]
 
+    var origin: CGPoint!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        origin = tileView.center
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -20,6 +29,68 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    @IBAction func panTile(_ sender: UIPanGestureRecognizer) {
+        
+        let tile = sender.view!
+        let point = sender.translation(in: view)
+        
+        let deltaX = point.x
+        let deltaY = point.y
+        // Check which delta larger
+        if abs(deltaX) > abs(deltaY) {
+            tile.center = CGPoint(x: view.center.x + point.x, y: origin.y)
+        }
+        
+        // Move based on largest delta
+        else {
+            tile.center = CGPoint(x: view.center.x, y: origin.y + point.y)
+        }
+        
+        if sender.state == UIGestureRecognizerState.ended {
+            
+            var newPos: CGPoint = self.origin
+            
+            // how far has it moved?
+           // let deltaX = point.x - origin.x
+            //let deltaY = point.y - origin.y
+
+            
+            //print("Point.x = ", point.x)
+            //print("Origin.x = ", origin.x)
+            //print("Point.y = ", point.y)
+            //print("Origin.y = ", origin.y)
+            //print("DeltaX = ", deltaX)
+            //print("DeltaY = ", deltaY)
+            
+            // Move horizontally
+            if  abs(deltaX) > abs(deltaY) && abs(deltaX) > tileView.frame.width/4 {
+                print("Far enough horiz")
+                newPos.x = origin.x + deltaX * 3
+                
+            }
+            // Move vertically
+            else if abs(deltaY) > abs(deltaX) && abs(deltaY) > tileView.frame.height/4 {
+                print("Far enough vert")
+                newPos.y = origin.y + deltaY * 3
+            }
+            
+            
+            
+            UIView.animate(withDuration: 0.1, animations: { 
+                tile.center = newPos
+            }, completion: { (success) in
+                // TODO: custom zone view (half of screen)
+                if !self.view.bounds.contains(tile.frame) {
+                   tile.center = self.origin
+                    let rand = Int(arc4random_uniform(4))
+                    let tileImage = self.tileImages[rand]
+                    self.tileView.tileImageView.image = tileImage
+                }
+
+            })
+            
+        }
+    }
 
 }
 
