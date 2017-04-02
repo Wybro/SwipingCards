@@ -12,6 +12,7 @@ class ViewController: UIViewController {
     
     @IBOutlet var tileImageView: UIImageView!
     @IBOutlet var tileView: TileView!
+    @IBOutlet var regionView: RegionView!
     
     var animator: UIDynamicAnimator?
     
@@ -22,6 +23,11 @@ class ViewController: UIViewController {
     var horizLock = false
     
     let tileImages = [UIImage(named: "Blue"), UIImage(named: "Green"), UIImage(named: "Red"), UIImage(named: "Yellow")]
+    
+    let red = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+    let blue = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+    let green = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+    let yellow = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
 
     var origin: CGPoint!
     
@@ -29,21 +35,26 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         origin = tileView.center
         
-        animator = UIDynamicAnimator(referenceView: self.view)
-        let gravity = UIGravityBehavior(items: [tileImageView!])
-        let vector = CGVector(dx: 0.0, dy: 1.0)
-        gravity.gravityDirection = vector
-        
-        let collision = UICollisionBehavior(items: [tileImageView!])
-        collision.translatesReferenceBoundsIntoBoundary = true
-        
-//        animator?.addBehavior(collision)
-//        animator?.addBehavior(gravity)
+        setupGame()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func setupGame() {
+        // Set the color & ID of each zone in region view
+        regionView.topZone.backgroundColor = red
+        regionView.rightZone.backgroundColor = blue
+        regionView.bottomZone.backgroundColor = green
+        regionView.leftZone.backgroundColor = yellow
+        
+        regionView.topZone.id = "red"
+        regionView.rightZone.id = "blue"
+        regionView.bottomZone.id = "green"
+        regionView.leftZone.id = "yellow"
+        
     }
 
     @IBAction func panTile(_ sender: UIPanGestureRecognizer) {
@@ -93,6 +104,7 @@ class ViewController: UIViewController {
             if vertLock && abs(deltaY) > tileView.frame.width/5 {
                 newPos.y = (deltaY > 0) ? self.view.frame.height + tileView.frame.height : -tileView.frame.height
                 
+                
             } else if horizLock && abs(deltaX) > tileView.frame.width/5 {
                 newPos.x = (deltaX > 0) ? self.view.frame.width + tileView.frame.width : -tileView.frame.width
             } else {
@@ -117,35 +129,6 @@ class ViewController: UIViewController {
             
         }
     }
-    
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        
-//        if let theTouch = touches.first {
-//            currentLocation = theTouch.location(in: self.view)
-//            
-//            if tileImageView.frame.contains(currentLocation!) {
-//            
-//            attachment = UIAttachmentBehavior(item: tileImageView!,
-//                                              attachedToAnchor: currentLocation!)
-//            
-//            animator?.addBehavior(attachment!)
-//            }
-//        }
-//    }
-//    
-//    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        if let theTouch = touches.first {
-//            
-//            currentLocation = theTouch.location(in: self.view)
-//            attachment?.anchorPoint = currentLocation!
-//        }
-//    }
-//    
-//    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        if attachment != nil {
-//        animator?.removeBehavior(attachment!)
-//        }
-//    }
 
 }
 
