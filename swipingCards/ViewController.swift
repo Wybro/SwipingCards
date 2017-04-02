@@ -13,6 +13,11 @@ class ViewController: UIViewController {
     @IBOutlet var tileImageView: UIImageView!
     @IBOutlet var tileView: TileView!
     
+    var animator: UIDynamicAnimator?
+    
+    var currentLocation: CGPoint?
+    var attachment: UIAttachmentBehavior?
+    
     var vertLock = false
     var horizLock = false
     
@@ -24,7 +29,16 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         origin = tileView.center
         
+        animator = UIDynamicAnimator(referenceView: self.view)
+        let gravity = UIGravityBehavior(items: [tileImageView!])
+        let vector = CGVector(dx: 0.0, dy: 1.0)
+        gravity.gravityDirection = vector
         
+        let collision = UICollisionBehavior(items: [tileImageView!])
+        collision.translatesReferenceBoundsIntoBoundary = true
+        
+        animator?.addBehavior(collision)
+        animator?.addBehavior(gravity)
     }
 
     override func didReceiveMemoryWarning() {
@@ -66,39 +80,44 @@ class ViewController: UIViewController {
             vertLock = false
         }
         
+    
+        
+        
         // Gesture ended
         if sender.state == UIGestureRecognizerState.ended {
             
             var newPos: CGPoint = self.origin
+//            let generator = UIImpactFeedbackGenerator(style: .medium)
+//            generator.prepare()
+//            generator.impactOccurred()
             
             // Check locks -- if locked, use position of tile
-            if vertLock {
+            if vertLock && abs(deltaY) > tileView.frame.width/4 {
                 print("vert")
-                newPos.x = origin.y + tile.center.y * 3
+                newPos.y = origin.y + tile.center.y * 3 * deltaY/abs(deltaY)
                 
-            } else if horizLock {
+            } else if horizLock && abs(deltaX) > tileView.frame.width/4 {
                 print("horiz")
-                newPos.x = origin.x + tile.center.x * 3
-                
+                newPos.x = origin.x + tile.center.x * 3 * deltaX/abs(deltaX)
             } else {
                 print("else")
             }
             
             // Move horizontally
-            if  abs(deltaX) > abs(deltaY) && abs(deltaX) > tileView.frame.width/4  {
-                print("Far enough horiz")
-                newPos.x = origin.x + deltaX * 3
-                
-            }
-            // Move vertically
-            else if abs(deltaY) > abs(deltaX) && abs(deltaY) > tileView.frame.height/4 {
-                print("Far enough vert")
-                newPos.y = origin.y + deltaY * 3
-            }
+//            if  abs(deltaX) > abs(deltaY) && abs(deltaX) > tileView.frame.width/4  {
+//                print("Far enough horiz")
+//                newPos.x = origin.x + deltaX * 3
+//                
+//            }
+//            // Move vertically
+//            else if abs(deltaY) > abs(deltaX) && abs(deltaY) > tileView.frame.height/4 {
+//                print("Far enough vert")
+//                newPos.y = origin.y + deltaY * 3
+//            }
             
             
             
-            UIView.animate(withDuration: 1, animations: {
+            UIView.animate(withDuration: 0.4, animations: {
                 tile.center = newPos
             }, completion: { (success) in
                 // TODO: custom zone view (half of screen)
@@ -110,10 +129,40 @@ class ViewController: UIViewController {
                     
                     self.vertLock = false
                     self.horizLock = false
+                    
                 }
 
             })
             
+        }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        if let theTouch = touches.first {
+            currentLocation = theTouch.location(in: self.view)
+            
+            if tileImageView.frame.contains(currentLocation!) {
+            
+            attachment = UIAttachmentBehavior(item: tileImageView!,
+                                              attachedToAnchor: currentLocation!)
+            
+            animator?.addBehavior(attachment!)
+            }
+        }
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let theTouch = touches.first {
+            
+            currentLocation = theTouch.location(in: self.view)
+            attachment?.anchorPoint = currentLocation!
+        }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if attachment != nil {
+        animator?.removeBehavior(attachment!)
         }
     }
 

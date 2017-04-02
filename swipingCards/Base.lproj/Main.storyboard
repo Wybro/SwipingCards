@@ -21,17 +21,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView hidden="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Blue" translatesAutoresizingMaskIntoConstraints="NO" id="8di-xy-YzO">
-                                <rect key="frame" x="16" y="51" width="150" height="150"/>
+                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Blue" translatesAutoresizingMaskIntoConstraints="NO" id="8di-xy-YzO">
+                                <rect key="frame" x="112.5" y="417" width="150" height="150"/>
                                 <gestureRecognizers/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="150" id="AK8-VQ-JTP"/>
                                     <constraint firstAttribute="width" constant="150" id="D1N-pZ-wZQ"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="QAu-8N-DbO"/>
                                     <constraint firstAttribute="height" constant="150" id="tk2-Gw-Njt"/>
                                 </constraints>
                             </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SzM-B2-Rfc" customClass="TileView" customModule="swipingCards" customModuleProvider="target">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SzM-B2-Rfc" customClass="TileView" customModule="swipingCards" customModuleProvider="target">
                                 <rect key="frame" x="37" y="267" width="300" height="300"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -50,6 +48,11 @@
                             <constraint firstItem="8di-xy-YzO" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="mSW-IQ-SX9"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="8di-xy-YzO" secondAttribute="bottom" constant="100" id="wNA-75-Gw2"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="SzM-B2-Rfc"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="tileImageView" destination="8di-xy-YzO" id="zhL-9a-2Uq"/>
