@@ -37,8 +37,8 @@ class ViewController: UIViewController {
         let collision = UICollisionBehavior(items: [tileImageView!])
         collision.translatesReferenceBoundsIntoBoundary = true
         
-        animator?.addBehavior(collision)
-        animator?.addBehavior(gravity)
+//        animator?.addBehavior(collision)
+//        animator?.addBehavior(gravity)
     }
 
     override func didReceiveMemoryWarning() {
@@ -80,9 +80,7 @@ class ViewController: UIViewController {
             vertLock = false
         }
         
-    
-        
-        
+
         // Gesture ended
         if sender.state == UIGestureRecognizerState.ended {
             
@@ -92,32 +90,15 @@ class ViewController: UIViewController {
 //            generator.impactOccurred()
             
             // Check locks -- if locked, use position of tile
-            if vertLock && abs(deltaY) > tileView.frame.width/4 {
-                print("vert")
-                newPos.y = origin.y + tile.center.y * 3 * deltaY/abs(deltaY)
+            if vertLock && abs(deltaY) > tileView.frame.width/5 {
+                newPos.y = (deltaY > 0) ? self.view.frame.height + tileView.frame.height : -tileView.frame.height
                 
-            } else if horizLock && abs(deltaX) > tileView.frame.width/4 {
-                print("horiz")
-                newPos.x = origin.x + tile.center.x * 3 * deltaX/abs(deltaX)
+            } else if horizLock && abs(deltaX) > tileView.frame.width/5 {
+                newPos.x = (deltaX > 0) ? self.view.frame.width + tileView.frame.width : -tileView.frame.width
             } else {
-                print("else")
             }
             
-            // Move horizontally
-//            if  abs(deltaX) > abs(deltaY) && abs(deltaX) > tileView.frame.width/4  {
-//                print("Far enough horiz")
-//                newPos.x = origin.x + deltaX * 3
-//                
-//            }
-//            // Move vertically
-//            else if abs(deltaY) > abs(deltaX) && abs(deltaY) > tileView.frame.height/4 {
-//                print("Far enough vert")
-//                newPos.y = origin.y + deltaY * 3
-//            }
-            
-            
-            
-            UIView.animate(withDuration: 0.4, animations: {
+            UIView.animate(withDuration: 0.3, animations: {
                 tile.center = newPos
             }, completion: { (success) in
                 // TODO: custom zone view (half of screen)
@@ -137,34 +118,34 @@ class ViewController: UIViewController {
         }
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        if let theTouch = touches.first {
-            currentLocation = theTouch.location(in: self.view)
-            
-            if tileImageView.frame.contains(currentLocation!) {
-            
-            attachment = UIAttachmentBehavior(item: tileImageView!,
-                                              attachedToAnchor: currentLocation!)
-            
-            animator?.addBehavior(attachment!)
-            }
-        }
-    }
-    
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let theTouch = touches.first {
-            
-            currentLocation = theTouch.location(in: self.view)
-            attachment?.anchorPoint = currentLocation!
-        }
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if attachment != nil {
-        animator?.removeBehavior(attachment!)
-        }
-    }
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        
+//        if let theTouch = touches.first {
+//            currentLocation = theTouch.location(in: self.view)
+//            
+//            if tileImageView.frame.contains(currentLocation!) {
+//            
+//            attachment = UIAttachmentBehavior(item: tileImageView!,
+//                                              attachedToAnchor: currentLocation!)
+//            
+//            animator?.addBehavior(attachment!)
+//            }
+//        }
+//    }
+//    
+//    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        if let theTouch = touches.first {
+//            
+//            currentLocation = theTouch.location(in: self.view)
+//            attachment?.anchorPoint = currentLocation!
+//        }
+//    }
+//    
+//    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        if attachment != nil {
+//        animator?.removeBehavior(attachment!)
+//        }
+//    }
 
 }
 
