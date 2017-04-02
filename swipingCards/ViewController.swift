@@ -13,6 +13,9 @@ class ViewController: UIViewController {
     @IBOutlet var tileImageView: UIImageView!
     @IBOutlet var tileView: TileView!
     
+    var vertLock = false
+    var horizLock = false
+    
     let tileImages = [UIImage(named: "Blue"), UIImage(named: "Green"), UIImage(named: "Red"), UIImage(named: "Yellow")]
 
     var origin: CGPoint!
@@ -38,32 +41,51 @@ class ViewController: UIViewController {
         let deltaY = point.y
         // Check which delta larger
         if abs(deltaX) > abs(deltaY) {
-            tile.center = CGPoint(x: view.center.x + point.x, y: origin.y)
+            if !vertLock {
+                horizLock = true
+                tile.center = CGPoint(x: view.center.x + point.x, y: origin.y)
+            } else {
+                tile.center = CGPoint(x: view.center.x, y: origin.y + point.y)
+            }
         }
         
         // Move based on largest delta
         else {
-            tile.center = CGPoint(x: view.center.x, y: origin.y + point.y)
+            if !horizLock {
+                vertLock = true
+                tile.center = CGPoint(x: view.center.x, y: origin.y + point.y)
+            } else {
+                tile.center = CGPoint(x: view.center.x + point.x, y: origin.y)
+            }
         }
         
+        if deltaX == 0 {
+            horizLock = false
+        }
+        if deltaY == 0 {
+            vertLock = false
+        }
+        
+        // Gesture ended
         if sender.state == UIGestureRecognizerState.ended {
             
             var newPos: CGPoint = self.origin
             
-            // how far has it moved?
-           // let deltaX = point.x - origin.x
-            //let deltaY = point.y - origin.y
-
-            
-            //print("Point.x = ", point.x)
-            //print("Origin.x = ", origin.x)
-            //print("Point.y = ", point.y)
-            //print("Origin.y = ", origin.y)
-            //print("DeltaX = ", deltaX)
-            //print("DeltaY = ", deltaY)
+            // Check locks -- if locked, use position of tile
+            if vertLock {
+                print("vert")
+                newPos.x = origin.y + tile.center.y * 3
+                
+            } else if horizLock {
+                print("horiz")
+                newPos.x = origin.x + tile.center.x * 3
+                
+            } else {
+                print("else")
+            }
             
             // Move horizontally
-            if  abs(deltaX) > abs(deltaY) && abs(deltaX) > tileView.frame.width/4 {
+            if  abs(deltaX) > abs(deltaY) && abs(deltaX) > tileView.frame.width/4  {
                 print("Far enough horiz")
                 newPos.x = origin.x + deltaX * 3
                 
@@ -76,7 +98,7 @@ class ViewController: UIViewController {
             
             
             
-            UIView.animate(withDuration: 0.1, animations: { 
+            UIView.animate(withDuration: 1, animations: {
                 tile.center = newPos
             }, completion: { (success) in
                 // TODO: custom zone view (half of screen)
@@ -85,6 +107,9 @@ class ViewController: UIViewController {
                     let rand = Int(arc4random_uniform(4))
                     let tileImage = self.tileImages[rand]
                     self.tileView.tileImageView.image = tileImage
+                    
+                    self.vertLock = false
+                    self.horizLock = false
                 }
 
             })
