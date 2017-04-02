@@ -13,8 +13,9 @@ import UIKit
     var view: UIView!
     @IBOutlet var tileImageView: UIImageView!
     
+    var id: String!
+    
     // MARK: - Init
-  
     override init(frame: CGRect) {
         super.init(frame: frame)
         xibSetup()

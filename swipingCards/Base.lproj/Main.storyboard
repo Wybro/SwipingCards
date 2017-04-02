@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -21,18 +21,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SzM-B2-Rfc" customClass="TileView" customModule="swipingCards" customModuleProvider="target">
-                                <rect key="frame" x="37" y="292" width="300" height="300"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="300" id="Xvn-Yx-8tV"/>
-                                    <constraint firstAttribute="width" constant="300" id="fPH-gt-QIj"/>
-                                </constraints>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="hVP-se-0ls" appends="YES" id="V72-7V-3yB"/>
-                                </connections>
-                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aOb-2y-jvw" customClass="RegionView" customModule="swipingCards" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="254.5" width="375" height="375"/>
+                                <rect key="frame" x="0.0" y="254" width="375" height="375"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="375" id="E4x-PC-icz"/>
@@ -46,12 +36,34 @@
                                     <constraint firstAttribute="height" constant="150" id="tk2-Gw-Njt"/>
                                 </constraints>
                             </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SzM-B2-Rfc" customClass="TileView" customModule="swipingCards" customModuleProvider="target">
+                                <rect key="frame" x="37" y="292" width="300" height="300"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="300" id="Xvn-Yx-8tV"/>
+                                    <constraint firstAttribute="width" constant="300" id="fPH-gt-QIj"/>
+                                </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="hVP-se-0ls" appends="YES" id="V72-7V-3yB"/>
+                                </connections>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pau-ZZ-0c9">
+                                <rect key="frame" x="94" y="114" width="187" height="59"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="187" id="OFA-yr-Qjz"/>
+                                    <constraint firstAttribute="height" constant="59" id="h0G-hI-zlF"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="pau-ZZ-0c9" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Dkg-wG-Rc6"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="aOb-2y-jvw" secondAttribute="bottom" constant="37.5" id="El0-7Y-3Xp"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="SzM-B2-Rfc" secondAttribute="bottom" constant="75" id="IA5-6m-lWF"/>
                             <constraint firstItem="SzM-B2-Rfc" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ONF-y4-hGL"/>
+                            <constraint firstItem="pau-ZZ-0c9" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="94" id="QLO-xs-l87"/>
                             <constraint firstItem="aOb-2y-jvw" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="W6H-z7-ENs"/>
                             <constraint firstItem="8di-xy-YzO" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="mSW-IQ-SX9"/>
                             <constraint firstAttribute="trailing" secondItem="aOb-2y-jvw" secondAttribute="trailing" id="s0Q-F6-dnU"/>
@@ -65,6 +77,7 @@
                     </view>
                     <connections>
                         <outlet property="regionView" destination="aOb-2y-jvw" id="htM-zJ-VqX"/>
+                        <outlet property="scoreLabel" destination="pau-ZZ-0c9" id="uDf-pe-xua"/>
                         <outlet property="tileImageView" destination="8di-xy-YzO" id="zhL-9a-2Uq"/>
                         <outlet property="tileView" destination="SzM-B2-Rfc" id="gFn-Q1-lfB"/>
                     </connections>
